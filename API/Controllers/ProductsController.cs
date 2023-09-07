@@ -25,9 +25,11 @@ namespace API.Controllers
           return await _context.Products.ToListAsync();
         }
         
-        [ProducesDefaultResponseType]
         [HttpGet("{id}")]
         public async Task<ActionResult<Product>> GetProduct(int id){
+          if(ModelState.IsValid){
+
+          }
           return await _context.Products.FindAsync(id);
         }
         
