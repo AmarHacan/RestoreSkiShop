@@ -7,10 +7,9 @@
 // ]
 
 import { useEffect, useState } from "react";
-import { Product } from "../model/Product";
-import Catalog from "../../features/Catalog/Catalog";
 import { Container, CssBaseline, ThemeProvider, Typography, createTheme } from "@mui/material";
 import Header from "./Header";
+import { Outlet } from "react-router-dom";
 
 
 
@@ -28,15 +27,14 @@ function App() {
 function handleThemeChange(){
   setDarkMode(!darkMode);
 }
- 
   return (
-    <ThemeProvider theme={theme}>
-    <CssBaseline/>
-    <Header darkMode={darkMode} handleThemeChange={handleThemeChange} />
-    <Container>
-<Catalog />  
-    </Container>
     
+    <ThemeProvider theme={theme}>
+    <Header darkMode={darkMode} handleThemeChange={handleThemeChange} />
+<CssBaseline/>
+    <Container>
+      <Outlet />    
+    </Container>
     </ThemeProvider>
   );
 }

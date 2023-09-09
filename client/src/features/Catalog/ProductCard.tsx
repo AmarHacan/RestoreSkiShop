@@ -1,6 +1,9 @@
 import { List, ListItem, ListItemAvatar, Avatar, ListItemText, Button, Card, CardActions, CardContent, CardMedia, Typography, CardHeader, CssBaseline } from "@mui/material";
 import { Product } from "../../app/model/Product";
 import Header from "../../app/layout/Header";
+import { Link, NavLink } from "react-router-dom";
+import { Fragment } from "react";
+import React from "react";
 
 interface Props{
     product : Product;
@@ -9,9 +12,9 @@ export default function ProductCard({product}:Props){
     
     return(<>
 
-        <CssBaseline/>
-    <Card sx={{ maxWidth: 345 }}>
-     
+        {/* <CssBaseline/> */}
+    <Card sx={{ maxWidth: 345 }} >
+    
      <CardHeader
      avatar={
         <Avatar sx={{bgcolor:'secondary.main'}}>
@@ -26,7 +29,8 @@ export default function ProductCard({product}:Props){
       <CardMedia
         sx={{ height: 140, backgroundSize:"contain" , backgroundColor:"primary.light" }}
         image={product.pictureUrl}
-        title={product.name}
+        title={product.name} 
+        
       />
       <CardContent>
         <Typography gutterBottom color="secondary" variant="h5" >
@@ -38,7 +42,7 @@ export default function ProductCard({product}:Props){
       </CardContent>
       <CardActions>
         <Button size="small">Add to Cart</Button>
-        <Button size="small">View</Button>
+        <Button size="small" component={Link} to={`/catalog/${product.id}`}>View</Button>
       </CardActions>
     </Card></>
     )
