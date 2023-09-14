@@ -12,6 +12,8 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Product } from "../../app/model/Product";
+import agent from "../../app/api/agent";
+import LoadingComponents from "../../app/layout/LoadingComponent";
 
 export default function ProductDetails() {
   const { id } = useParams<{ id: string }>();
@@ -20,17 +22,31 @@ export default function ProductDetails() {
   const [isLoading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<any>("");
 
-  useEffect(() => {
-    axios
-      .get(`http://localhost:5000/api/products/${id}`)
-      .then((response) => setProduct(response.data))
-      .catch((error) => console.log(error))
-      .finally(() => setLoading(false));
-  }, [id]);
 
-  if (isLoading) return <h3>Loading...</h3>;
+useEffect(()=>{
+        id && agent.catalog.details(parseInt(id))
+        .then(product=>setProduct(product))
+    .catch((error) => setError(error))
+      .finally(() => setLoading(false));;
+}
+,[id]);
+
+
+
+
+  // useEffect(() => {
+  //   axios
+  //     .get(`http://localhost:5000/api/products/${id}`)
+      // .then((response) => setProduct(response.data))
+      // .catch((error) => console.log(error))
+      // .finally(() => setLoading(false));
+  // }, [id]);
+
+
+
+  if (isLoading) return <LoadingComponents/>;
   if (!product) return <h3>product not found {error}</h3>;
-
+if(error) return <Typography>{error}</Typography>
   return (
     <>
       <Grid container spacing={6}>

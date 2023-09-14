@@ -12,7 +12,6 @@ export default function ProductCard({product}:Props){
     
     return(<>
 
-        {/* <CssBaseline/> */}
     <Card sx={{ maxWidth: 345 }} >
     
      <CardHeader
