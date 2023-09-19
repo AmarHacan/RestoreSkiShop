@@ -2,14 +2,31 @@ import { List, ListItem, ListItemAvatar, Avatar, ListItemText, Button, Card, Car
 import { Product } from "../../app/model/Product";
 import Header from "../../app/layout/Header";
 import { Link, NavLink } from "react-router-dom";
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import React from "react";
+import agent from "../../app/api/agent";
+import { LoadingButton } from "@mui/lab";
+import { useStoreContext } from "../../app/StoreContext.tsx/StoreContext";
+import { CurrencyFormat } from "../../app/util/util";
 
 interface Props{
     product : Product;
 }
 export default function ProductCard({product}:Props){
+    const [loading, setLoading] = useState(false);
+    const {setBasket} = useStoreContext();
+    //function to add clicked item to the basket based on the product id present on the card or product
     
+    
+    function handleAddItem(productId:number){
+      setLoading(true);
+      agent.basket.addItem(productId)
+      .then(response=>setBasket(response))
+      .then(error=>console.log(error))
+      .finally(()=>setLoading(false));
+    }
+
+
     return(<>
 
     <Card sx={{ maxWidth: 345 }} >
@@ -33,14 +50,14 @@ export default function ProductCard({product}:Props){
       />
       <CardContent>
         <Typography gutterBottom color="secondary" variant="h5" >
-          ${(product.price/100).toFixed(2) }
+          {CurrencyFormat(product.price)}
         </Typography>
         <Typography variant="body2" color="text.secondary">
             {product.brand} / {product.type}
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small">Add to Cart</Button>
+        <LoadingButton loading={loading} onClick={()=>handleAddItem(product.id)} size="small" >Add to Cart</LoadingButton>
         <Button size="small" component={Link} to={`/catalog/${product.id}`}>View</Button>
       </CardActions>
     </Card></>

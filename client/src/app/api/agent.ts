@@ -5,9 +5,11 @@ import { Router } from "react-router-dom";
 import { router } from "../../features/router/Routes";
 import { promises } from "dns";
 import { resolve } from "path";
+import Basket from "../../features/Basket/BasketPage";
+//https://localhost:7109/api/Basket
 
 axios.defaults.baseURL = "http://localhost:5000/api/";
-
+axios.defaults.withCredentials = true;
 //decalring a function for getting data from response
 //body of axios response by using single call back function like the following
 
@@ -53,7 +55,7 @@ const requests = {
   get: (url: string) => axios.get(url).then(responseBody),
   post: (url: string, body: {}) => axios.post(url, body).then(responseBody),
   put: (url: string, body: {}) => axios.post(url, body).then(responseBody),
-  delete: (url: string) => axios.post(url).then(responseBody),
+  delete: (url: string) => axios.delete(url).then(responseBody),
 };
 
 const catalog = {
@@ -70,9 +72,19 @@ const testerror = {
   get500ServerError: () => requests.get("Buggy/server-error"),
 };
 
+// service api's
+const basket = {
+  getTUserBasket: () => requests.get("Basket"),
+  addItem: (productId: number, quantity: number = 1) =>
+    requests.post(`Basket?productId=${productId}&quantity=${quantity}`, {}),
+  removeItem: (productId: number, quantity: number = 1) =>
+    requests.delete(`Basket?productId=${productId}&quantity=${quantity}`),
+};
+
 const agent = {
   catalog,
   testerror,
+  basket,
 };
 
 export default agent;
